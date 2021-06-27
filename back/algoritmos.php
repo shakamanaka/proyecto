@@ -49,9 +49,13 @@
             $vector = $objeto->ordenar($vector);
             $vector2 = $objeto->ordenar($vector2);
             $vectorDevuelto = [];
-            for ($i = 0; $i < (count($vector)+count($vector2)); $i++)
+            for ($i = 0; $i < (count($vector)); $i++)
             {
-                array_push($vectorDevuelto, 0);
+                array_push($vectorDevuelto, $vector[$i]);
+            }
+            for ($i = 0; $i < (count($vector2)); $i++)
+            {
+                array_push($vectorDevuelto, $vector2[$i]);
             }
             $indiceIzquierdo = 0;
             $indiceDerecho = 0;
@@ -59,6 +63,7 @@
             $cantidadDerecha = count($vector2);
             $contador = 0;
             $vectorDevuelto2 = [];
+            array_push($vectorDevuelto2,$vectorDevuelto);
             while($indiceIzquierdo < $cantidadIzquierda && $indiceDerecho < $cantidadDerecha){
                 if($vector[$indiceIzquierdo] <= $vector2[$indiceDerecho]){
                     $vectorDevuelto[$contador] = $vector[$indiceIzquierdo];
@@ -163,14 +168,16 @@
         $pivotLocation = arrange($arr, $left, $right);
         if ($left < $pivotLocation - 1) { // sort left half
             partition($arr, $left, $pivotLocation-1,$prueba);
-             array_push($prueba,$arr);
+            
             
         }
         if ($pivotLocation < $right) { // sort right half
             partition($arr, $pivotLocation, $right,$prueba);
-             array_push($prueba,$arr);
+            
             
         }
+       
+        array_push($prueba,$arr);
        
 
     }

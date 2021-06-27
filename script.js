@@ -1,7 +1,7 @@
-async function iniciar(){
+async function iniciar(opcion){
             
     var prueba = [];
-    const prueba2 = await loadPeriods();
+    const prueba2 = await loadPeriods(opcion);
     for (let index = 0; index < prueba2[0].length; index++) {
         prueba.push(String(index));
         
@@ -9,17 +9,16 @@ async function iniciar(){
     
     
     const labels = prueba;
-   
+    const nombres = ['Algoritmo Burbuja','Algoritmo Insertion','Algoritmo Merge','Algoritmo QuickSort'];
     const data = {
         labels: labels,
         datasets: [{
-            label: 'My First dataset',
+            label: nombres[opcion-1],
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
             data: prueba2[0],
         }]
     };
-    console.log(prueba2[0]);
     const config = {
         type: 'bar',
         data,
@@ -28,17 +27,28 @@ async function iniciar(){
         }
     };
     
+    let array = ['',2,3,4]
+    console.log("HOLA");
+    try {
+        var myChart = new Chart(
+            document.getElementById('myChart'.concat(array[opcion-1])),
+            config
+            );
+        
+    } catch  {
+        
+        document.getElementById("canvas".concat(array[opcion-1])).innerHTML = '';
+        document.getElementById("canvas".concat(array[opcion-1])).innerHTML = `
+            <canvas id="myChart${array[opcion-1]}"></canvas>
+        `;
+
+        var myChart = new Chart(
+            document.getElementById('myChart'.concat(array[opcion-1])),
+            config
+            );
+    }
     
-    var myChart = new Chart(
-    document.getElementById('myChart'),
-    config
-    );
-    /* console.log(myChart.config.data);
-    console.log(myChart); */
-    
-    /* setTimeout(function(){ console.log(data.datasets[0].data); }, 1000);
-    setTimeout(function(){data.datasets[0].data = prueba2[1];}, 1000);
-    setTimeout(function(){ console.log(data.datasets[0].data); }, 1000); */
+   
     for (let index = 0; index < prueba2.length; index++) {
         removeData(myChart, prueba2[index])
         
@@ -48,15 +58,14 @@ async function iniciar(){
     
 }
 
-async function loadPeriods(){
+async function loadPeriods(opcion){
     return new Promise((res,rej)=>{
         $.ajax({
             type:'POST',
             url:'back/main.php',
             
-            data: {opcion: 4},
+            data: {opcion: opcion},
             success:(data)=>{
-                console.log(data);
                 res(JSON.parse(data));
             },
             error:(data)=>{
@@ -74,6 +83,5 @@ function removeData(chart, array) {
         
         
     }
-    alert('done');
+    
 }
-document.addEventListener("DOMContentLoaded",iniciar);
